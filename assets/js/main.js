@@ -6,8 +6,16 @@ const questionScreen = document.querySelector("#question-screen")
 const highscoreScreen = document.querySelector("#highscore-screen")
 const goBackBtn = document.querySelector("#go-back")
 const viewHighScore = document.querySelector("#scoreboard")
-const previousQuestions = []
+const navigationBar = document.querySelector("#navigation")
+const splashScreen = document.querySelector("#splash-screen")
+const timerTag = document.querySelector("#timer")
+const scoreTag = document.querySelector("#score")
+const finalScoreTag = document.querySelector("#final-score");
+
 let score = 0
+let time = 120
+let timer;
+let timeoutId;
 
 //local storage
 const leaderBoard = JSON.parse(localStorage.getItem("leaderBoard")) || [] 
@@ -18,7 +26,7 @@ const leaderBoard = JSON.parse(localStorage.getItem("leaderBoard")) || []
 
 
 //quiz information
-const quiz = [
+const QUIZ_LIST = [
   {  
     question: "what's my fav color?",
     answerChoices: [
@@ -50,6 +58,8 @@ const quiz = [
     ]
   }
 ]
+let quiz = [...QUIZ_LIST] // shallow copy of quiz
+
 
 
 function getRandomQuestion() {
@@ -66,19 +76,26 @@ function removeQuestionFromList(questionIdx) {
       quiz.splice(questionIdx, 1);
     }
   }
-} 
+}
+
+function navigateToResultsScreen() {
+  clearTimeout(timer);
+  finalScoreTag.innerText = score;
+  toggleHTMLElement(endResults, questionScreen)
+}
 
 function displayQuestion() {
+  clearTimeout(timeoutId);
   const currentQuestionObj = getRandomQuestion(); //so all the info lives here i guess and therfore we need a codename for it
   if (currentQuestionObj === undefined) { //so when we run out of questions goes to final screen
-    return toggleHTMLElement(endResults, questionScreen)
+    return navigateToResultsScreen();
   } 
 
+  const shuffledChoices = currentQuestionObj.answerChoices.sort(() => Math.random() - .5)
   questionEl.textContent = currentQuestionObj.question; //this shows the question on the screen
 
-  
-  for (let i = 0; i < currentQuestionObj.answerChoices.length; i++) { 
-    const currentAnswerChoice = currentQuestionObj.answerChoices[i]; //grabs the info
+  for (let i = 0; i < shuffledChoices.length; i++) { 
+    const currentAnswerChoice = shuffledChoices[i]; //grabs the info
     createAnswerBtn(currentAnswerChoice)//puts it in the function
   }
 }
@@ -97,19 +114,21 @@ function toggleHTMLElement(elementToDisplay, elementToHide){
 
 function submitScores() {
   const initialsBox = document.querySelector("#initials-box")
-  const initialsValue = initialsBox.value //grabbing the value inside the input tag
+  const initialsValue = initialsBox.value.trim() //grabbing the value inside the input tag
+  if (!initialsValue.length) {
+    return alert('Please insert initials')
+  }
   leaderBoard.push({initials: initialsValue, score: score}) //saving the initials and score in the leaderboard array
   localStorage.setItem("leaderBoard", JSON.stringify(leaderBoard)) //saving leaderboard array to the browser
-  displayLeaderboardItems();
-  toggleHTMLElement(goBackBtn, viewHighScore)
-  toggleHTMLElement(highscoreScreen, endResults)
+  navigateToLeaderboard(endResults)
+  initialsBox.value = "";
 }
 
 function displayLeaderboardItems() {
   const sortedLeaderboard = leaderBoard.sort((a, b) => b.score - a.score);
   highscoreScreen.innerHTML = "";
 
-  for (let i = 0; i < sortedLeaderboard.length; i++) {
+  for (let i = 0; i < Math.min(sortedLeaderboard.length, 10); i++) {
     const currentLeaderboardItem = sortedLeaderboard[i];
     const leaderboardItemHTML = (
       `<div>
@@ -122,16 +141,67 @@ function displayLeaderboardItems() {
   }
 }
 
+function hideHTMLEl(HTMLel) {
+  HTMLel.classList.add("hidden")
+}
+
+function navigateToLeaderboard(screenToHide) {
+  displayLeaderboardItems()
+  toggleHTMLElement(goBackBtn, viewHighScore)
+  toggleHTMLElement(highscoreScreen, screenToHide)
+}
+
+function navigateToSplashScreen() {
+  toggleHTMLElement(viewHighScore, goBackBtn)
+  toggleHTMLElement(splashScreen, highscoreScreen)
+}
+
+function setTimer() {
+  timer = setInterval(() => {
+    time -= 1;
+    timerTag.innerText = time;
+
+    if (time <= 0) {
+      navigateToResultsScreen()
+    }
+  }, 1000)
+}
+function startQuiz() {
+  resetQuiz();
+  displayQuestion();
+  toggleHTMLElement(questionScreen, splashScreen);
+  hideHTMLEl(viewHighScore);
+  setTimer();
+}
+
+function resetQuiz() {
+  score = 0;
+  scoreTag.innerText = score;
+  time = 120;
+  timerTag.innerText = time;
+  resultsEl.innerHTML = "";
+  quiz = [...QUIZ_LIST];
+}
+
 answersEL.addEventListener("click", (event) => {
   const rightAnswer = JSON.parse(event.target.value);//makes the isCorrect value a boolean
   if (rightAnswer) {
+    score += 10;
+    scoreTag.innerText = score;
     resultsEl.innerHTML = "<p>Correct!</p>"; 
   } else {
+    time -= 10;
+    if (time < 0) {
+      time = 0;
+    }
+    timerTag.innerText = time;
     resultsEl.innerHTML = "<p>Wrong!</p>";
   }
-
-  answersEL.innerHTML = ""; //remvoving previous answer choices
-  displayQuestion()
+  setTimeout(() => {
+    answersEL.innerHTML = ""; //remvoving previous answer choices
+    resultsEl.innerHTML = "";
+    displayQuestion()
+  }, 1250);
 })
 
 endResults.addEventListener("click", (event) => {
@@ -140,4 +210,16 @@ endResults.addEventListener("click", (event) => {
   }
 })
 
-displayQuestion()
+navigationBar.addEventListener("click", (event) => {
+  if (event.target.innerText === "Go Back") {
+    navigateToSplashScreen();
+  } else if (event.target.innerText === "View Highscores") {
+    navigateToLeaderboard(splashScreen)
+  }
+})
+
+splashScreen.addEventListener("click", (event) => {
+  if (event.target.innerText === "Play") {
+    startQuiz()
+  }
+})

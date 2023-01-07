@@ -9,16 +9,18 @@
 </head>
 <body>
 
-    <div>
-      <p id="scoreboard">View Highscore</p>
+    <div id="navigation">
+      <p id="scoreboard">View Highscores</p>
       <button class="hidden" id="go-back">Go Back</button>
     </div>
 
     <main>
 
-      <section id="splash-screen"></section>
+      <section id="splash-screen">
+        <button>Play</button>
+      </section>
       
-      <div id="question-screen">
+      <div class="hidden" id="question-screen">
         <aside>
           <section>
             <h2>Time:</h2>
@@ -27,7 +29,7 @@
   
           <section>
             <h2>Score:</h2>
-            <p id="score">100</p>
+            <p id="score">0</p>
           </section>
         </aside>
   
@@ -41,7 +43,7 @@
       <section class="hidden" id="end-result">
         <section class="clock">
           <h2>Score:</h2>
-          <p id="final-score">100</p>
+          <p id="final-score">0</p>
         </section>
         <p> Enter Initials:</p>
         <input id="initials-box"></input>
