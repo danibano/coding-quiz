@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+
+#scoreboard {
+    color:#ce56ec;
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.quiz {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hidden{
+    display: none;
+}

@@ -9,30 +9,47 @@
 </head>
 <body>
 
-    <div><p id="scoreboard">View Highscore</p></div>
+    <div>
+      <p id="scoreboard">View Highscore</p>
+      <button class="hidden" id="go-back">Go Back</button>
+    </div>
 
     <main>
 
-      <aside>
-
-        <section>
-          <h2>Time:</h2>
-          <p id="timer">120</p>
+      <section id="splash-screen"></section>
+      
+      <div id="question-screen">
+        <aside>
+          <section>
+            <h2>Time:</h2>
+            <p id="timer">120</p>
+          </section>
+  
+          <section>
+            <h2>Score:</h2>
+            <p id="score">100</p>
+          </section>
+        </aside>
+  
+        <section class="quiz">
+          <h2 id="questions"> Question </h2>
+          <div id="choices"></div>
+          <div id="results"></div>
         </section>
+      </div>
 
-        <section>
+      <section class="hidden" id="end-result">
+        <section class="clock">
           <h2>Score:</h2>
-          <p id="score">100</p>
+          <p id="final-score">100</p>
         </section>
-
-      </aside>
-
-      <section>
-        <h2 id="questions"> Question </h2>
-        <div id="choices"></div>
-        <div id="results"></div>
-
+        <p> Enter Initials:</p>
+        <input id="initials-box"></input>
+        <button>Submit</button>
       </section>
+
+      <section class="hidden" id="highscore-screen"></section>
+
     </main>
     
     <script src="./assets/js/main.js"></script>
