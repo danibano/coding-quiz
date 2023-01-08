@@ -102,6 +102,7 @@ function displayQuestion() {
 
 function createAnswerBtn(answerChoice){
   const answerBtn = document.createElement("button"); //this makes a button
+  answerBtn.className = "answer-choices"; //this is to style
   answerBtn.innerText = answerChoice.answer;//this shows text on button
   answerBtn.value = answerChoice.isCorrect;//this makes it true or false, since we're storing this into the value it becomes a string
   answersEL.appendChild(answerBtn);//this adds it to the DOM
@@ -117,9 +118,12 @@ function submitScores() {
   const initialsValue = initialsBox.value.trim() //grabbing the value inside the input tag
   if (!initialsValue.length) {
     return alert('Please insert initials')
+  } else if (initialsValue.length > 5) {
+    return alert('Please enter initials no longer than 5 characters')
   }
   leaderBoard.push({initials: initialsValue, score: score}) //saving the initials and score in the leaderboard array
   localStorage.setItem("leaderBoard", JSON.stringify(leaderBoard)) //saving leaderboard array to the browser
+  navigationBar.classList.remove("hidden");
   navigateToLeaderboard(endResults)
   initialsBox.value = "";
 }
@@ -131,7 +135,7 @@ function displayLeaderboardItems() {
   for (let i = 0; i < Math.min(sortedLeaderboard.length, 10); i++) {
     const currentLeaderboardItem = sortedLeaderboard[i];
     const leaderboardItemHTML = (
-      `<div>
+      `<div class="flex leaderboard-item">
         <p>${currentLeaderboardItem.initials}</p>
         <p>${currentLeaderboardItem.score}</p>
       </div>`
@@ -170,7 +174,7 @@ function startQuiz() {
   resetQuiz();
   displayQuestion();
   toggleHTMLElement(questionScreen, splashScreen);
-  hideHTMLEl(viewHighScore);
+  hideHTMLEl(navigationBar);
   setTimer();
 }
 
@@ -184,42 +188,47 @@ function resetQuiz() {
 }
 
 answersEL.addEventListener("click", (event) => {
-  const rightAnswer = JSON.parse(event.target.value);//makes the isCorrect value a boolean
-  if (rightAnswer) {
-    score += 10;
-    scoreTag.innerText = score;
-    resultsEl.innerHTML = "<p>Correct!</p>"; 
-  } else {
-    time -= 10;
-    if (time < 0) {
-      time = 0;
+  const tagName = event.target.tagName;
+
+  if (tagName === "BUTTON") {
+    const rightAnswer = JSON.parse(event.target.value);//makes the isCorrect value a boolean
+
+    if (rightAnswer) {
+      score += 10;
+      scoreTag.innerText = score;
+      resultsEl.innerHTML = "<p>Correct!</p>"; 
+    } else {
+      time -= 10;
+      if (time < 0) {
+        time = 0;
+      }
+      timerTag.innerText = time;
+      resultsEl.innerHTML = "<p>Wrong!</p>";
     }
-    timerTag.innerText = time;
-    resultsEl.innerHTML = "<p>Wrong!</p>";
+    setTimeout(() => {
+      answersEL.innerHTML = ""; //remvoving previous answer choices
+      resultsEl.innerHTML = "";
+      displayQuestion()
+    }, 1250);
   }
-  setTimeout(() => {
-    answersEL.innerHTML = ""; //remvoving previous answer choices
-    resultsEl.innerHTML = "";
-    displayQuestion()
-  }, 1250);
 })
 
 endResults.addEventListener("click", (event) => {
-  if (event.target.innerText === "Submit") {
+  if (event.target.id === "submit") {
     submitScores()
   }
 })
 
 navigationBar.addEventListener("click", (event) => {
-  if (event.target.innerText === "Go Back") {
+  if (event.target.id === "go-back") {
     navigateToSplashScreen();
-  } else if (event.target.innerText === "View Highscores") {
+  } else if (event.target.id === "scoreboard") {
     navigateToLeaderboard(splashScreen)
   }
 })
 
 splashScreen.addEventListener("click", (event) => {
-  if (event.target.innerText === "Play") {
+  if (event.target.id === "play-game") {
     startQuiz()
   }
 })
