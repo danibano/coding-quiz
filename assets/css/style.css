@@ -88,12 +88,25 @@ main {
     font-size: 2rem;
 }
 
+.clock {
+    padding: 1rem;
+    background-color: #efbefb;
+    border: 1rem solid #600094;
+}
+
+.points {
+    padding: 1rem;
+    background-color: #efbefb;
+    border: 1rem solid #600094;
+}
+
 .quiz {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     font-size: 2rem;
+    margin: 2rem;
 }
 
 .answer-choices {
@@ -105,10 +118,24 @@ main {
     border-radius: 5rem;
     transition-timing-function: linear;
     transition: 0.3s;
+    width: 10rem;
 }
 
-.top-choices {
-    
+#top-choices {
+   margin: 1rem;
+   display: flex;
+   justify-content: space-evenly;
+
+}
+
+#bottom-choices{
+    margin: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#questions {
+    padding: 2rem;
 }
 
 .submissions {
@@ -124,17 +151,38 @@ main {
 }
 
 .end-initials {
-    font-size: 1rem;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+#initials-box, #submit {
+    height: 2rem;
 }
 
 .hidden{
     display: none;
 }
 
+#highscore-screen {
+    background-color: #bb95c4;
+}
+
 .leaderboard-item {
     padding: 1rem;
     justify-content: space-between;
-    width: 8rem;
+    width: 15rem;
+    font-size: 2rem;
+}
+
+#go-back {
+    font-size: 2rem;    
+    border-color: #600094;
+    border-width: 0.5rem;
+    background-color: #efbefb;
+    padding: 1rem;
 }
 
 #scoreboard:hover {
