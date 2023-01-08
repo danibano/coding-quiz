@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor: default;
 }
 
 body, html {
@@ -28,6 +29,17 @@ main {
     margin: 1rem;
     width: 11.2rem;
 }
+
+#title {
+    font-size: 8rem;
+    margin: 4rem;
+    padding: 2rem;
+    text-align: center;
+    border: 2rem solid #efbefb;
+    border-radius: 3rem;
+    background-color: #ce56ec;
+}
+
 #splash-screen {
     background-color: #bb95c4;
 }
@@ -41,6 +53,10 @@ main {
     border-radius: 5rem;
     transition-timing-function: linear;
     transition: 0.3s;
+}
+
+#question-screen {
+    background-color: #bb95c4;
 }
 
 .flex {
@@ -60,16 +76,31 @@ main {
     flex-direction: column;
 }
 
-.clock {
+.tracker {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    text-align: center;
+    margin: 2rem;
+    font-size: 2rem;
 }
 
 .quiz {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.answer-choices {
+    font-size: 2rem;  
+    border-color: #ce56ec;
+    border-width: 0.5rem;
+    background-color: #efbefb;
+    padding: 1rem;
+    border-radius: 5rem;
+    transition-timing-function: linear;
+    transition: 0.3s;
 }
 
 .hidden{
@@ -90,4 +121,8 @@ main {
 #play-game:hover {
     transform: scale( 1.1 );
     box-shadow: inset 0px 0px 40px #600094 , 0px 0px 40px #600094;
+}
+
+.answer-choices:hover {
+    transform: scale(1.1);
 }

@@ -14,7 +14,7 @@ const finalScoreTag = document.querySelector("#final-score");
 
 let score = 0
 let time = 120
-let timer;
+let timer; // to stop the timer from running in background
 let timeoutId;
 
 //local storage
@@ -61,6 +61,7 @@ const QUIZ_LIST = [
 let quiz = [...QUIZ_LIST] // shallow copy of quiz
 
 
+//functions
 
 function getRandomQuestion() {
   let randomQuestionIdx = Math.floor(Math.random() * quiz.length); //keeping track of the questions to be displayed
@@ -106,6 +107,15 @@ function createAnswerBtn(answerChoice){
   answerBtn.innerText = answerChoice.answer;//this shows text on button
   answerBtn.value = answerChoice.isCorrect;//this makes it true or false, since we're storing this into the value it becomes a string
   answersEL.appendChild(answerBtn);//this adds it to the DOM
+}
+
+function disableChoices() {
+  const choiceTags = document.querySelectorAll(".answer-choices");
+
+  for (let i = 0; i < choiceTags.length; i++) {
+    const choiceTag = choiceTags[i];
+    choiceTag.setAttribute("disabled", true);
+  }
 }
 
 function toggleHTMLElement(elementToDisplay, elementToHide){
@@ -187,6 +197,8 @@ function resetQuiz() {
   quiz = [...QUIZ_LIST];
 }
 
+//event listners
+
 answersEL.addEventListener("click", (event) => {
   const tagName = event.target.tagName;
 
@@ -205,6 +217,8 @@ answersEL.addEventListener("click", (event) => {
       timerTag.innerText = time;
       resultsEl.innerHTML = "<p>Wrong!</p>";
     }
+
+    disableChoices();
     setTimeout(() => {
       answersEL.innerHTML = ""; //remvoving previous answer choices
       resultsEl.innerHTML = "";

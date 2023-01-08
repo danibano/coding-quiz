@@ -16,12 +16,14 @@
 
     <main>
 
-      <section class=" flex center full-height" id="splash-screen">
+      <section class=" flex center flex-column full-height" id="splash-screen">
+        <h1 id="title"> Coding Quiz</h1>
         <button id="play-game">Play</button>
       </section>
       
       <div class="hidden flex center full-height" id="question-screen">
-        <aside>
+
+        <aside class="tracker">
           <section>
             <h2>Time:</h2>
             <p id="timer">120</p>
@@ -38,16 +40,20 @@
           <div id="choices"></div>
           <div id="results"></div>
         </section>
+
       </div>
 
       <section class="hidden flex center full-height" id="end-result">
-        <section class="clock">
+        
+        <section>
           <h2>Score:</h2>
           <p id="final-score">0</p>
         </section>
+       
         <p> Enter Initials:</p>
         <input id="initials-box" placeholder="5 character max"></input>
         <button id="submit">Submit</button>
+
       </section>
 
       <section class="hidden flex center full-height flex-column" id="highscore-screen"></section>
