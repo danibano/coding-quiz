@@ -37,7 +37,10 @@
   
         <section class="quiz">
           <h2 id="questions"> Question </h2>
-          <div id="choices"></div>
+          <div id="choices">
+            <div id="top-choices"></div>
+            <div id="bottom-choices"></div>
+          </div>
           <div id="results"></div>
         </section>
 
@@ -45,14 +48,20 @@
 
       <section class="hidden flex center full-height" id="end-result">
         
-        <section>
-          <h2>Score:</h2>
-          <p id="final-score">0</p>
-        </section>
-       
-        <p> Enter Initials:</p>
-        <input id="initials-box" placeholder="5 character max"></input>
-        <button id="submit">Submit</button>
+        <div class="submissions">
+
+          <div class="end-score">
+            <h2>Score:</h2>
+            <h2 id="final-score">0</h2>
+          </div>
+
+          <div class="end-initials"">
+            <p> Enter Initials:</p>
+            <input id="initials-box" placeholder="5 character max"></input>
+            <button id="submit">Submit</button>
+          </div>
+
+        </div>
 
       </section>
 

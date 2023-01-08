@@ -11,6 +11,8 @@ const splashScreen = document.querySelector("#splash-screen")
 const timerTag = document.querySelector("#timer")
 const scoreTag = document.querySelector("#score")
 const finalScoreTag = document.querySelector("#final-score");
+const topAnswerDiv = document.querySelector("#top-choices");
+const bottomAnswerDiv = document.querySelector("#bottom-choices");
 
 let score = 0
 let time = 120
@@ -97,16 +99,25 @@ function displayQuestion() {
 
   for (let i = 0; i < shuffledChoices.length; i++) { 
     const currentAnswerChoice = shuffledChoices[i]; //grabs the info
-    createAnswerBtn(currentAnswerChoice)//puts it in the function
+    let answerDiv;
+    if (i < 2) {
+      answerDiv = topAnswerDiv;
+    } else {
+      answerDiv = bottomAnswerDiv;
+    }
+    createAnswerBtn(currentAnswerChoice, answerDiv)//puts it in the function
   }
+
+  answersEL.appendChild(topAnswerDiv);
+  answersEL.appendChild(bottomAnswerDiv);
 }
 
-function createAnswerBtn(answerChoice){
+function createAnswerBtn(answerChoice, parentElement){
   const answerBtn = document.createElement("button"); //this makes a button
   answerBtn.className = "answer-choices"; //this is to style
   answerBtn.innerText = answerChoice.answer;//this shows text on button
   answerBtn.value = answerChoice.isCorrect;//this makes it true or false, since we're storing this into the value it becomes a string
-  answersEL.appendChild(answerBtn);//this adds it to the DOM
+  parentElement.appendChild(answerBtn);//this adds it to the DOM
 }
 
 function disableChoices() {
@@ -197,6 +208,12 @@ function resetQuiz() {
   quiz = [...QUIZ_LIST];
 }
 
+function resetChoices() {
+  topAnswerDiv.innerHTML = "";
+  bottomAnswerDiv.innerHTML = "";
+  resultsEl.innerHTML = "";
+}
+
 //event listners
 
 answersEL.addEventListener("click", (event) => {
@@ -220,8 +237,7 @@ answersEL.addEventListener("click", (event) => {
 
     disableChoices();
     setTimeout(() => {
-      answersEL.innerHTML = ""; //remvoving previous answer choices
-      resultsEl.innerHTML = "";
+      resetChoices() //remvoving previous answer choices
       displayQuestion()
     }, 1250);
   }

@@ -59,6 +59,10 @@ main {
     background-color: #bb95c4;
 }
 
+#end-result {
+    background-color: #bb95c4;
+}
+
 .flex {
     display: flex;
 }
@@ -101,6 +105,22 @@ main {
     border-radius: 5rem;
     transition-timing-function: linear;
     transition: 0.3s;
+}
+
+.submissions {
+    align-items: center;
+}
+
+.end-score {
+    justify-content: space-between;
+    display: flex;
+    font-size: 4rem;
+    margin: 2rem;
+    width: 27rem;
+}
+
+.end-initials {
+    font-size: 1rem;
 }
 
 .hidden{
