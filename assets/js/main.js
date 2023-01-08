@@ -1,26 +1,26 @@
-const questionEl = document.querySelector("#questions") //where it is in the HTML
-const answersEL = document.querySelector("#choices")
-const resultsEl = document.querySelector("#results")
-const endResults = document.querySelector("#end-result")
-const questionScreen = document.querySelector("#question-screen")
-const highscoreScreen = document.querySelector("#highscore-screen")
-const goBackBtn = document.querySelector("#go-back")
-const viewHighScore = document.querySelector("#scoreboard")
-const navigationBar = document.querySelector("#navigation")
-const splashScreen = document.querySelector("#splash-screen")
-const timerTag = document.querySelector("#timer")
-const scoreTag = document.querySelector("#score")
+const questionEl = document.querySelector("#questions"); //where it is in the HTML
+const answersEL = document.querySelector("#choices");
+const resultsEl = document.querySelector("#results");
+const endResults = document.querySelector("#end-result");
+const questionScreen = document.querySelector("#question-screen");
+const highscoreScreen = document.querySelector("#highscore-screen");
+const goBackBtn = document.querySelector("#go-back");
+const viewHighScore = document.querySelector("#scoreboard");
+const navigationBar = document.querySelector("#navigation");
+const splashScreen = document.querySelector("#splash-screen");
+const timerTag = document.querySelector("#timer");
+const scoreTag = document.querySelector("#score");
 const finalScoreTag = document.querySelector("#final-score");
 const topAnswerDiv = document.querySelector("#top-choices");
 const bottomAnswerDiv = document.querySelector("#bottom-choices");
 
-let score = 0
-let time = 120
+let score = 0;
+let time = 120;
 let timer; // to stop the timer from running in background
 let timeoutId;
 
 //local storage
-const leaderBoard = JSON.parse(localStorage.getItem("leaderBoard")) || [] 
+const leaderBoard = JSON.parse(localStorage.getItem("leaderBoard")) || [] ;
 
 //looks for the "key" leaderboard in the browser, 
 //if it exists then it returns the value inside leaderboard key 
@@ -60,7 +60,8 @@ const QUIZ_LIST = [
     ]
   }
 ]
-let quiz = [...QUIZ_LIST] // shallow copy of quiz
+
+let quiz = [...QUIZ_LIST]; // shallow copy of quiz
 
 
 //functions
@@ -84,7 +85,7 @@ function removeQuestionFromList(questionIdx) {
 function navigateToResultsScreen() {
   clearTimeout(timer);
   finalScoreTag.innerText = score;
-  toggleHTMLElement(endResults, questionScreen)
+  toggleHTMLElement(endResults, questionScreen);
 }
 
 function displayQuestion() {
@@ -94,7 +95,7 @@ function displayQuestion() {
     return navigateToResultsScreen();
   } 
 
-  const shuffledChoices = currentQuestionObj.answerChoices.sort(() => Math.random() - .5)
+  const shuffledChoices = currentQuestionObj.answerChoices.sort(() => Math.random() - .5);
   questionEl.textContent = currentQuestionObj.question; //this shows the question on the screen
 
   for (let i = 0; i < shuffledChoices.length; i++) { 
@@ -105,7 +106,7 @@ function displayQuestion() {
     } else {
       answerDiv = bottomAnswerDiv;
     }
-    createAnswerBtn(currentAnswerChoice, answerDiv)//puts it in the function
+    createAnswerBtn(currentAnswerChoice, answerDiv);//puts it in the function
   }
 
   answersEL.appendChild(topAnswerDiv);
@@ -130,8 +131,8 @@ function disableChoices() {
 }
 
 function toggleHTMLElement(elementToDisplay, elementToHide){
-  elementToDisplay.classList.remove("hidden") //displays screen
-  elementToHide.classList.add("hidden") //hides other screen
+  elementToDisplay.classList.remove("hidden"); //displays screen
+  elementToHide.classList.add("hidden"); //hides other screen
 }
 
 function submitScores() {
@@ -140,12 +141,12 @@ function submitScores() {
   if (!initialsValue.length) {
     return alert('Please insert initials')
   } else if (initialsValue.length > 5) {
-    return alert('Please enter initials no longer than 5 characters')
+    return alert('Please enter initials no longer than 5 characters');
   }
-  leaderBoard.push({initials: initialsValue, score: score}) //saving the initials and score in the leaderboard array
-  localStorage.setItem("leaderBoard", JSON.stringify(leaderBoard)) //saving leaderboard array to the browser
+  leaderBoard.push({initials: initialsValue, score: score}); //saving the initials and score in the leaderboard array
+  localStorage.setItem("leaderBoard", JSON.stringify(leaderBoard)); //saving leaderboard array to the browser
   navigationBar.classList.remove("hidden");
-  navigateToLeaderboard(endResults)
+  navigateToLeaderboard(endResults);
   initialsBox.value = "";
 }
 
@@ -167,18 +168,18 @@ function displayLeaderboardItems() {
 }
 
 function hideHTMLEl(HTMLel) {
-  HTMLel.classList.add("hidden")
+  HTMLel.classList.add("hidden");
 }
 
 function navigateToLeaderboard(screenToHide) {
   displayLeaderboardItems()
-  toggleHTMLElement(goBackBtn, viewHighScore)
-  toggleHTMLElement(highscoreScreen, screenToHide)
+  toggleHTMLElement(goBackBtn, viewHighScore);
+  toggleHTMLElement(highscoreScreen, screenToHide);
 }
 
 function navigateToSplashScreen() {
-  toggleHTMLElement(viewHighScore, goBackBtn)
-  toggleHTMLElement(splashScreen, highscoreScreen)
+  toggleHTMLElement(viewHighScore, goBackBtn);
+  toggleHTMLElement(splashScreen, highscoreScreen);
 }
 
 function setTimer() {
@@ -187,10 +188,11 @@ function setTimer() {
     timerTag.innerText = time;
 
     if (time <= 0) {
-      navigateToResultsScreen()
+      navigateToResultsScreen();
     }
   }, 1000)
 }
+
 function startQuiz() {
   resetQuiz();
   displayQuestion();
@@ -237,15 +239,15 @@ answersEL.addEventListener("click", (event) => {
 
     disableChoices();
     setTimeout(() => {
-      resetChoices() //remvoving previous answer choices
-      displayQuestion()
+      resetChoices(); //remvoving previous answer choices
+      displayQuestion();
     }, 1250);
   }
 })
 
 endResults.addEventListener("click", (event) => {
   if (event.target.id === "submit") {
-    submitScores()
+    submitScores();
   }
 })
 
@@ -253,12 +255,12 @@ navigationBar.addEventListener("click", (event) => {
   if (event.target.id === "go-back") {
     navigateToSplashScreen();
   } else if (event.target.id === "scoreboard") {
-    navigateToLeaderboard(splashScreen)
+    navigateToLeaderboard(splashScreen);
   }
 })
 
 splashScreen.addEventListener("click", (event) => {
   if (event.target.id === "play-game") {
-    startQuiz()
+    startQuiz();
   }
 })

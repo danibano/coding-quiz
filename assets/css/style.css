@@ -107,6 +107,10 @@ main {
     transition: 0.3s;
 }
 
+.top-choices {
+    
+}
+
 .submissions {
     align-items: center;
 }
